@@ -13,7 +13,7 @@ class User(models.Model):
 
 class Comment(models.Model):
   author=models.ForeignKey(User, on_delete=models.CASCADE)
-  anime=models.ForeignKey(Anime, on_delete=models.CASCADE)
+  anime=models.ForeignKey(Anime, on_delete=models.CASCADE) 
   comment=models.TextField()
 
 class List(models.Model):
