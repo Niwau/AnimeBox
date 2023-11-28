@@ -54,6 +54,8 @@ class CreateCommentSerializer(serializers.ModelSerializer):
         fields = ['comment']
 
 class ListSerializer(serializers.ModelSerializer):
+    animes = AnimeSerializer(many=True, read_only=True)
+
     class Meta:
         model = List
         fields = ['name', 'animes', 'id']
@@ -66,7 +68,16 @@ class CreateListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = List
-        fields = ['name', 'animes']
+        fields = ['name']
+
+class PushAnimeToListSerializer(serializers.Serializer):
+    anime_id = serializers.IntegerField()
+    list_id = serializers.IntegerField()
+
+    def validate(self, data):
+        if not data.get('list_id') or not data.get('anime_id'):
+            raise serializers.ValidationError("list_id ou anime_id inválido")
+        return data
 
 class EpisodeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
