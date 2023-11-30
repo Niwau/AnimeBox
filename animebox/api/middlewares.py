@@ -6,7 +6,7 @@ from django.http import HttpResponseForbidden
 def auth_middleware(get_response):
   def middleware(request):
 
-    if (request.path == '/users' and request.method == 'POST' or request.path == '/users/login' and request.method == 'POST'):
+    if (request.path == '/account' and request.method == 'POST' or request.path == '/account/login' and request.method == 'POST'):
       return get_response(request)
     
     token = request.headers.get('Authorization').split(' ')[1]

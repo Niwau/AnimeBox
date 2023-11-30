@@ -6,6 +6,23 @@ from api.serializers import UserSerializer, CreateUserSerializer, UpdateUserSeri
 from django.contrib.auth.hashers import check_password
 from api.utils import create_user_token
 
+def create_user(name, email, password, is_admin: bool):
+  user_role = 'NORMAL'
+
+  if is_admin:
+    user_role = 'ADMIN'
+
+  data = { 'name': name, 'email': email, 'password': password, 'role': user_role }
+
+  serializer = CreateUserSerializer(data=data)
+  if serializer.is_valid():
+    if (User.objects.filter(email=email).exists()): # VERIFICA SE O USUÁRIO JÁ ESTÁ CADASTRADO.
+      return Response({'error': 'Esse usuário já está cadastrado'}, status=status.HTTP_401_UNAUTHORIZED)
+    serializer.save()
+    return Response({'message': 'Usuário criado'}, status=status.HTTP_201_CREATED)
+  else:
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 def delete_user(user_id: int):
   user = User.objects.filter(id=user_id).first()
   if (user):
@@ -25,15 +42,8 @@ class UsersController(APIView):
     return Response(serializer.data)
 
   def post(self, request):
-    serializer = CreateUserSerializer(data=request.data)
-    if serializer.is_valid():
-      if (User.objects.filter(email=request.data['email']).exists()): # VERIFICA SE O USUÁRIO JÁ ESTÁ CADASTRADO.
-        return Response({'error': 'Esse usuário já está cadastrado'}, status=status.HTTP_401_UNAUTHORIZED)
-      serializer.save()
-      return Response({'message': 'Usuário criado'}, status=status.HTTP_201_CREATED)
-    else:
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
+    return create_user(name=request.data['name'], email=request.data['email'], password=request.data['password'], is_admin=False)
+      
   def patch(self, request):
     user = User.objects.filter(id=request.user_id).first()
     if (user):
@@ -94,7 +104,16 @@ class AnimesController(APIView):
       return Response({'error': 'Anime não encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 class ListsController(APIView):
-  def get(self, request):
+  def get(self, request, list_id):
+
+    if (list_id):
+      list = List.objects.filter(id=list_id, user=request.user_id).first()
+      if (list):
+        serializer = ListSerializer(list)
+        return Response(serializer.data)
+      else:
+        return Response({'error': 'Lista não encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
     lists = List.objects.filter(user=request.user_id)
     serializer = ListSerializer(lists, many=True)
     return Response(serializer.data)
