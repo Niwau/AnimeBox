@@ -3,6 +3,8 @@ from api.models import Anime, User, Comment, List, Episode
 from django.contrib.auth import hashers
 
 class AnimeSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(max_length=None, use_url=True)
+
     class Meta:
         model = Anime
         fields = ['name', 'sinopsis', 'image', 'id']
@@ -35,13 +37,17 @@ class UserLoginSerializer(serializers.HyperlinkedModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
+    author_id = serializers.SerializerMethodField()
 
     def get_author(self, obj):
         return obj.author.name
 
+    def get_author_id(self, obj):
+        return obj.author.id
+
     class Meta:
         model = Comment
-        fields = ['author', 'comment', 'id']
+        fields = ['author', 'comment', 'id', 'author_id']
 
 class CreateCommentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
