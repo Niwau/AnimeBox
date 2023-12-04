@@ -19,6 +19,8 @@ class AccountController(APIView):
 
   # CRIA UMA NOVA CONTA COM ROLE=NORMAL.
   def post(self, request):
+    data = request.data
+    data['role'] = 'NORMAL'
     serializer = AccountSerializer(data=request.data)
 
     if serializer.is_valid():
