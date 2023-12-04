@@ -20,7 +20,3 @@ class List(models.Model):
   name=models.CharField(max_length=100)
   user=models.ForeignKey(User, on_delete=models.CASCADE)
   animes=models.ManyToManyField(Anime)
-
-class Episode(models.Model):
-  anime=models.ForeignKey(Anime, on_delete=models.CASCADE)
-  title=models.CharField(max_length=100)
