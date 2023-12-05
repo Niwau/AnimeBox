@@ -20,11 +20,20 @@ Para o desenvolvimento desse projeto foram utilizadas as seguintes tecnologias:
 Antes de prosseguir, verifique se possui o Python instalado. Em seguida, criaremos um ambiente virtual para executar a aplicação.
 
 ```bash
-.\venv\Scripts\Activate # Comando para ativar o ambiente.
+# Comando para criar o ambiente virtual (se ainda não foi criado)
+py -m venv .venv
 
+# Comando para ativar o ambiente virtual
+.\venv\Scripts\Activate
+
+# Comando para instalar todas as dependências listadas no arquivo requirements.txt
+pip install -r requirements.txt
+
+# Navegar para o diretório do projeto
 cd animebox\animebox
 
-python manage.py runserver # Comando para rodar o servidor.
+# Comando para iniciar o servidor de desenvolvimento do Django
+python manage.py runserver
 ```
 
 ## Documentação
