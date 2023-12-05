@@ -36,6 +36,12 @@ cd animebox\animebox
 python manage.py runserver
 ```
 
+## Conexão com o Frontend
+
+Para integrar e utilizar o frontend do projeto, consulte a documentação abaixo:
+
+[Documentação do Frontend](https://github.com/Niwau/AnimeBox-Front)
+
 ## Documentação
 
 Para acessar a documentação completa da API no Postman, utilize o seguinte link: [Documentação da API](https://documenter.getpostman.com/view/22341437/2s9YeLZpjA)
