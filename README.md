@@ -30,7 +30,7 @@ py -m venv .venv
 pip install -r requirements.txt
 
 # Navegar para o diretório do projeto
-cd animebox\animebox
+cd animebox
 
 # Comando para iniciar o servidor de desenvolvimento do Django
 python manage.py runserver
